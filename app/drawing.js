@@ -4,8 +4,10 @@ let ctx = canvas.getContext('2d');
 let rect = {}, drag = false, selections = [];
 let categoryBox = document.getElementById('categoryLabel');
 let categoryButton = document.getElementById('categoryButton');
+let saveAnnotationsButton = document.getElementById('saveAnnotations');
 let annotations = document.getElementById('annotations');
 let id_count = 0;
+let current_filename = "";
 
 class Selection {
     constructor(x,y,w,h,label) {
@@ -23,6 +25,10 @@ function init() {
   canvas.addEventListener('mouseup', mouseUp, false);
   canvas.addEventListener('mousemove', mouseMove, false);
   categoryButton.addEventListener('click', saveSelection, false);
+  saveAnnotationsButton.addEventListener('click', function() {
+      let filename = current_filename.replace(/\.[^/.]+$/, "");
+      downloadAnnotations(selections, `${filename}.json`, 'text/json');
+  }, false);
 }
 
 function mouseDown(e) {
@@ -96,6 +102,32 @@ function getDeleteButton(selectionId) {
         + 'Delete</a>'
         + '</div>'
     return html;
+}
+
+function openFile(event) {
+    let input = event.target;
+    let reader = new FileReader();
+    reader.onload = function(){
+        let dataURL = reader.result;
+        let output = document.getElementById('cv');
+        output.src = dataURL;
+    };
+    reader.readAsDataURL(input.files[0]);
+    // Change name of current file
+    current_filename = input.files[0].name;
+}
+
+function downloadAnnotations(content, fileName, contentType) {
+    let out_file_content = {
+        "filename": current_filename,
+        "annotations": content,
+    }
+    let out_file_content_str = JSON.stringify(out_file_content);
+    let a = document.createElement("a");
+    let file = new Blob([out_file_content_str], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
 }
 
 init();
