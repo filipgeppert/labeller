@@ -120,6 +120,8 @@ function openFile(event) {
 function downloadAnnotations(content, fileName, contentType) {
     let out_file_content = {
         "filename": current_filename,
+        "height": 900,
+        "width": 600,
         "annotations": content,
     }
     let out_file_content_str = JSON.stringify(out_file_content);
