@@ -1,0 +1,13 @@
+mark {
+  background: #bfff00;
+  color: black;
+}
+
+.button:active {
+  box-shadow: 0 10px #bfff00;
+  transform: translateY(4px);
+}
+
+canvas {
+  border:1px solid #000000;
+}

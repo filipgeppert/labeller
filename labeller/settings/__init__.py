@@ -1,0 +1,1 @@
+from labeller.settings.django import *
