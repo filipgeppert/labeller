@@ -3,10 +3,11 @@ let textAnnotated = document.getElementById("text-annotated");
 let annotations = document.getElementById('annotations');
 let newCategory = document.getElementById('inputCategory');
 
-let content = "";
+let content = "This is an example sentence.";
 text.innerText = content;
 
 let saveSelection = document.getElementById('saveSelection');
+let saveAnnotations = document.getElementById('saveAnnotations');
 let selections = [];
 let categories = ['statistics', 'programming', 'devops'];
 
@@ -119,3 +120,27 @@ readTextFile("../ocr/texts/cv_3.json", function(text_json){
     text.innerHTML = content;
 });
 
+
+function sendDataAJAX (url, data) {
+      $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            console.log("Data saved.")
+        }
+      });
+}
+
+saveAnnotations.addEventListener('click', function () {
+    // Construct annotation object
+    let data = {
+        "documentId": JSON.stringify(1),
+        "paragraphId": JSON.stringify(1),
+        "labelledText": JSON.stringify({
+            "text": text.innerText,
+            "selections": selections,
+        })
+    };
+   sendDataAJAX('ajax/saveLabelledText', data);
+});
