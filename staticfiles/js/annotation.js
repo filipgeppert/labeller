@@ -120,7 +120,6 @@ readTextFile("../ocr/texts/cv_3.json", function(text_json){
     text.innerHTML = content;
 });
 
-
 function sendDataAJAX (url, data) {
       $.ajax({
         url: url,
@@ -132,6 +131,7 @@ function sendDataAJAX (url, data) {
       });
 }
 
+
 saveAnnotations.addEventListener('click', function () {
     // Construct annotation object
     let data = {
@@ -142,5 +142,5 @@ saveAnnotations.addEventListener('click', function () {
             "selections": selections,
         })
     };
-   sendDataAJAX('ajax/saveLabelledText', data);
+   sendDataAJAX('save', data);
 });

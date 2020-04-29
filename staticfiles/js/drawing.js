@@ -20,16 +20,55 @@ class Selection {
     }
 }
 
-function init() {
-  canvas.addEventListener('mousedown', mouseDown, false);
-  canvas.addEventListener('mouseup', mouseUp, false);
-  canvas.addEventListener('mousemove', mouseMove, false);
-  categoryButton.addEventListener('click', saveSelection, false);
-  saveAnnotationsButton.addEventListener('click', function() {
-      let filename = current_filename.replace(/\.[^/.]+$/, "");
-      downloadAnnotations(selections, `${filename}.json`, 'text/json');
-  }, false);
+function sendDataAJAX (url, data) {
+      $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            console.log("Data saved.")
+        }
+      });
 }
+
+function sendImageAJAX (img) {
+    let formData = new FormData();
+    // let file = $('#cv')[0].files[0];
+    formData.append('image', img);
+    // TODO: add csrf token
+    // https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
+    $.ajax({
+       url: 'saveImage',
+       type: 'post',
+       data: formData,
+       contentType: false,
+       processData: false,
+       success: function () {
+            console.log("Success!")
+       }
+    });
+}
+
+function init() {
+    canvas.addEventListener('mousedown', mouseDown, false);
+    canvas.addEventListener('mouseup', mouseUp, false);
+    canvas.addEventListener('mousemove', mouseMove, false);
+    categoryButton.addEventListener('click', saveSelection, false);
+    saveAnnotationsButton.addEventListener('click', function () {
+        let filename = current_filename.replace(/\.[^/.]+$/, "");
+        // downloadAnnotations(selections, `${filename}.json`, 'text/json');
+        let data = {
+            "imageId": JSON.stringify(1),
+            "labelledImage": JSON.stringify({
+                "text": filename,
+                "selections": selections,
+            })
+        };
+        sendDataAJAX('save', data)
+        sendImageAJAX();
+    }, false);
+}
+
 
 function mouseDown(e) {
   rect.startX = e.pageX - this.offsetLeft;
@@ -113,9 +152,11 @@ function openFile(event) {
         output.src = dataURL;
     };
     reader.readAsDataURL(input.files[0]);
+    sendImageAJAX(input.files[0]);
     // Change name of current file
     current_filename = input.files[0].name;
 }
+
 
 function downloadAnnotations(content, fileName, contentType) {
     let out_file_content = {
@@ -131,5 +172,6 @@ function downloadAnnotations(content, fileName, contentType) {
     a.download = fileName;
     a.click();
 }
+
 
 init();

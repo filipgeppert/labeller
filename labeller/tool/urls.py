@@ -1,11 +1,16 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
 urlpatterns = [
-    path("", views.LabelTextView.as_view()),
-    path("labelImage/", views.LabelImageView.as_view()),
+    path("labelText/", include([
+        path("", views.LabelTextView.as_view(), name='label-text'),
+        path("save", views.save_labelled_text, name='save-text'),
+    ])),
 
-    # AJAX calls
-    path("ajax/saveLabelledText", views.save_labelled_text, name='save-labelled-text'),
+    path("labelImage/", include([
+        path("", views.LabelImageView.as_view(), name='label-image'),
+        path("save", views.save_image_labels, name='save-image'),
+        path("saveImage", views.save_image, name='save-image'),
+    ])),
 ]
