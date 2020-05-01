@@ -1,15 +1,17 @@
 from django.db import models
 from PIL import Image
-
+from django.conf import settings
 # Create your models here.
 
 
 class DocumentLabel(models.Model):
-    startX = models.ImageField()
+    startX = models.IntegerField()
     startY = models.IntegerField()
-    width = models.ImageField()
-    height = models.ImageField()
-    category = models.ManyToManyField("Category")
+    width = models.IntegerField()
+    height = models.IntegerField()
+    # category = models.ManyToManyField("Category")
+    # TODO: change it to what's above
+    category = models.CharField(max_length=100, default="general")
     document = models.OneToOneField("Document", on_delete=models.CASCADE, primary_key=True)
 
 
@@ -36,6 +38,8 @@ class Document(models.Model):
         im = Image.open(self.image)
         self.height = im.height
         self.width = im.width
+        self.height_factor = im.height / settings.IMAGE_HEIGHT_HTML
+        self.width_factor = im.width / settings.IMAGE_WIDTH_HTML
         super(Document, self).save(*args, **kwargs)
 
 
