@@ -1,16 +1,33 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Labelling tool{% endblock title %}</title>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block import %}
     {% endblock import %}
 </head>
 <body>
-{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        {% include 'navbar.html' %}
+    </div>
+    <div class="row p-2">
+        <div class="col-2">
+            {% include 'side_bar.html' %}
+        </div>
+        <main role="main" class="col-10" style="position: relative;">
+            {% block body %}
 
-{% endblock body %}
+            {% endblock body %}
+        </main>
+    </div>
+</div>
 </body>
 {% block scripts %}
 

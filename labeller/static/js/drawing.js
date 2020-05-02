@@ -1,5 +1,3 @@
-import {sendDataAJAX} from "./utilities";
-
 let cv = document.getElementById('cv');
 let canvas = document.getElementById('imageCanvas');
 let ctx = canvas.getContext('2d');
@@ -8,18 +6,52 @@ let categoryBox = document.getElementById('categoryLabel');
 let categoryButton = document.getElementById('categoryButton');
 let saveAnnotationsButton = document.getElementById('saveAnnotations');
 let annotations = document.getElementById('annotations');
+let imageId = null;
 let id_count = 0;
 let current_filename = "";
 
 class Selection {
-    constructor(x,y,w,h,label) {
+    constructor(x,y,w,h,category) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
-        this.label = label;
+        this.category = category;
         this.id = id_count;
     }
+}
+
+function sendDataAJAX (url, data) {
+      $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            console.log("Data saved.")
+        }
+      });
+}
+
+function sendImageAJAX(img) {
+    let formData = new FormData();
+    // let file = $('#cv')[0].files[0];
+    formData.append('image', img);
+    // TODO: add csrf token
+    // https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
+    $.ajax({
+        url: 'saveImage',
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            imageId = data.imageId;
+        },
+        error: function () {
+            // TODO: add modal info that data was not saved
+            console.log("There was a problem with saving image.")
+        }
+    });
 }
 
 function init() {
@@ -31,19 +63,25 @@ function init() {
         let filename = current_filename.replace(/\.[^/.]+$/, "");
         // downloadAnnotations(selections, `${filename}.json`, 'text/json');
         let data = {
-            "imageId": JSON.stringify(1),
+            "imageId": JSON.stringify(imageId),
             "labelledImage": JSON.stringify({
-                "text": filename,
                 "selections": selections,
             })
         };
-        sendDataAJAX('ajax/saveLabelledImage', data)
+        if (imageId !== null) {
+            console.log("Hej");
+            sendDataAJAX('save', data);
+        } else {
+            // TODO: add modal info that data was not saved
+            console.log("Problem with saving.");
+        }
     }, false);
 }
 
+
 function mouseDown(e) {
-  rect.startX = e.pageX - this.offsetLeft;
-  rect.startY = e.pageY - this.offsetTop;
+  rect.startX = e.pageX;
+  rect.startY = e.pageY;
   drag = true;
 }
 
@@ -55,8 +93,8 @@ function mouseUp() {
 function mouseMove(e) {
   if (drag) {
     hideInput();
-    rect.w = (e.pageX - this.offsetLeft) - rect.startX;
-    rect.h = (e.pageY - this.offsetTop) - rect.startY ;
+    rect.w = (e.pageX) - rect.startX;
+    rect.h = (e.pageY) - rect.startY ;
     ctx.clearRect(0,0,canvas.width,canvas.height);
     draw();
   }
@@ -84,7 +122,7 @@ function displaySelections(selections) {
     let content = "";
     for (let i=0; i < selections.length; i++) {
         content += '<div class="alert alert-primary row" role="alert">'
-            + `<div class="col-4 text-black-50 font-weight-bold">${selections[i].label}</div>`
+            + `<div class="col-4 text-black-50 font-weight-bold">${selections[i].category}</div>`
             // + getCategoriesForm(selections[i].id)
             + getDeleteButton(selections[i].id)
             + '</div>';
@@ -94,8 +132,8 @@ function displaySelections(selections) {
 
 function saveSelection () {
     let submitValue = document.getElementById('textCategory');
-    rect.label = submitValue.value.slice();
-    let s = new Selection(rect.startX, rect.startY, rect.w, rect.h, rect.label);
+    rect.category = submitValue.value.slice();
+    let s = new Selection(rect.startX, rect.startY, rect.w, rect.h, rect.category);
     id_count += 1;
     selections.push(s);
     displaySelections(selections);
@@ -123,9 +161,11 @@ function openFile(event) {
         output.src = dataURL;
     };
     reader.readAsDataURL(input.files[0]);
+    sendImageAJAX(input.files[0]);
     // Change name of current file
     current_filename = input.files[0].name;
 }
+
 
 function downloadAnnotations(content, fileName, contentType) {
     let out_file_content = {

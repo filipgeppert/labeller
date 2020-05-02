@@ -2,52 +2,48 @@
 {% load static %}
 
 {% block title %} Annotation {% endblock title %}
-{% block import %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock import %}
 
 {% block body %}
-    <div class="container">
+    <div class="container ml-0 pl-0">
         <div class="row">
-            <nav class="col-2 bg-light d-none d-md-block sidebar pt-2">
-                <div class="mt-2 mb-2">Document sections:</div>
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">
-                                Name
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Address
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Customers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Reports
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Integrations
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="col-10">
+{#            <nav class="col-2 bg-light d-none d-md-block pt-2">#}
+{#                <div class="mt-2 mb-2">Document sections:</div>#}
+{#                <div class="sidebar-sticky">#}
+{#                    <ul class="nav flex-column">#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link active" href="#">#}
+{#                                Name#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">#}
+{#                                Address#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">#}
+{#                                Products#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">#}
+{#                                Customers#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">#}
+{#                                Reports#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">#}
+{#                                Integrations#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </nav>#}
+            <div class="col-12">
                 <div class="row">
                     <div class="col-6">
                         <div class="card m-1">
@@ -64,9 +60,8 @@
                             <button type="button" class="btn border-dark shadow" id="saveSelection">Add selection
                             </button>
                         </div>
-                    </div>
-                    <div class="col-6 d-flex flex-column">
-                        <div class="card m-1">
+
+                                                <div class="card m-1">
                             <div class="card-header">
                                 Text annotated
                             </div>
@@ -84,11 +79,9 @@
                                 <a type="button" class="btn border-dark shadow" onclick="addCategory()">Add category</a>
                             </div>
                         </div>
-
                     </div>
-                </div>
-
-                <div class="card m-1">
+                    <div class="col-6 d-flex flex-column">
+                                        <div class="card m-1">
                     <div class="card-header">
                         <div class="row justify-content-between pl-3 pr-3">
                             Annotations
@@ -100,6 +93,10 @@
                     <div class="card-body" id="annotations">
                     </div>
                 </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>

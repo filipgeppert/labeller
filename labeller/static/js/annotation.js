@@ -1,5 +1,3 @@
-import { sendDataAJAX } from './utilities';
-
 let text = document.getElementById("text");
 let textAnnotated = document.getElementById("text-annotated");
 let annotations = document.getElementById('annotations');
@@ -122,6 +120,17 @@ readTextFile("../ocr/texts/cv_3.json", function(text_json){
     text.innerHTML = content;
 });
 
+function sendDataAJAX (url, data) {
+      $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            console.log("Data saved.")
+        }
+      });
+}
+
 
 saveAnnotations.addEventListener('click', function () {
     // Construct annotation object
@@ -133,5 +142,5 @@ saveAnnotations.addEventListener('click', function () {
             "selections": selections,
         })
     };
-   sendDataAJAX('ajax/saveLabelledText', data);
+   sendDataAJAX('save', data);
 });

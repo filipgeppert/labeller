@@ -9955,11 +9955,11 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .text-white {
-    color: #fff !important
+    color: #fff
 }
 
 .text-primary {
-    color: #007bff !important
+    color: #007bff
 }
 
 a.text-primary:focus, a.text-primary:hover {
@@ -9967,7 +9967,7 @@ a.text-primary:focus, a.text-primary:hover {
 }
 
 .text-secondary {
-    color: #6c757d !important
+    color: #6c757d
 }
 
 a.text-secondary:focus, a.text-secondary:hover {

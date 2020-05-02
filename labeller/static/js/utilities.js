@@ -1,4 +1,4 @@
-export function sendDataAJAX (url, data) {
+function sendDataAJAX (url, data) {
       $.ajax({
         url: url,
         data: data,
@@ -8,4 +8,3 @@ export function sendDataAJAX (url, data) {
         }
       });
 }
-

@@ -11,3 +11,40 @@ mark {
 canvas {
   border:1px solid #000000;
 }
+
+.primary-color {
+  color: #3d63d2;
+}
+
+.text-primary {
+  color: #d7dbf6 !important;
+}
+
+.text-secondary {
+  color: #5a5c69;
+}
+
+.background-color {
+  color: #f8f9fc;
+}
+
+.bg-blue {
+  background-color: #3d63d2 !important;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}

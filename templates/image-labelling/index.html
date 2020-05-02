@@ -2,10 +2,6 @@
 {% load static %}
 
 {% block title %}Image labelling {% endblock title %}
-{% block import %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock import %}
 
 {% block body %}
 <div class="row m-0 p-0">
@@ -26,31 +22,50 @@
     </div>
 
     <div id="annotationList" class="col-4 text-center">
-        <input type='file' accept='image/*' onchange='openFile(event)' class="m-3">
         <div class="card justify-content-center m-1">
             <div class="card-header">
                 <div class="row justify-content-between pl-3 pr-3">
-                    Categories
-                    <button type="button" class="btn border-dark shadow"
-                            id="addCategory">Add category
-                    </button>
+                    Upload document
                 </div>
             </div>
+            <div class="card-body">
+              <input type='file' accept='image/*' onchange='openFile(event)' class="m-3">
+            </div>
         </div>
+{#        <div class="card justify-content-center m-1">#}
+{#            <div class="card-header">#}
+{#                <div class="row justify-content-between pl-3 pr-3">#}
+{#                    Manage categories#}
+{#                    <a type="button"#}
+{#                            class="btn border-dark shadow"#}
+{#                            id="addCategory">Add category#}
+{#                    </a>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="card-body scroll" id="categories">#}
+{#            </div>#}
+{#        </div>#}
         <div class="card justify-content-center m-1">
             <div class="card-header">
                 <div class="row justify-content-between pl-3 pr-3">
-                    Annotations
-                    <button type="button" class="btn border-dark shadow"
+                    Manage annotations
+                    <a type="button"
+                            class="btn border-dark shadow"
                             id="saveAnnotations">Save annotations
-                    </button>
+                    </a>
                 </div>
             </div>
-            <div class="card-body" id="annotations">
+            <div class="card-body scroll" id="annotations">
             </div>
         </div>
+        <button class="btn btn-block font-weight-bold bg-blue text-white py-2 m-1">
+            Extract and label text in this image
+        </button>
     </div>
 </div>
+
+{% include '_message.html' %}
+
 {% endblock body %}
 
 {% block scripts %}
