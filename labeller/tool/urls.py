@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("labelText/", include([
-        path("", views.LabelTextView.as_view(), name='label-text'),
+        path("<int:pk>", views.LabelTextView.as_view(), name='label-text'),
         path("save", views.save_labelled_text, name='save-text'),
     ])),
 

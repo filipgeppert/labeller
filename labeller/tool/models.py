@@ -12,7 +12,7 @@ class DocumentLabel(models.Model):
     # category = models.ManyToManyField("Category")
     # TODO: change it to what's above
     category = models.CharField(max_length=100, default="general")
-    document = models.OneToOneField("Document", on_delete=models.CASCADE, primary_key=True)
+    document = models.ForeignKey("Document", on_delete=models.CASCADE)
 
 
 class TextLabel(models.Model):
@@ -45,7 +45,8 @@ class Document(models.Model):
 
 class Paragraph(models.Model):
     text = models.TextField(max_length=10000)
-    document = models.OneToOneField(Document, on_delete=models.CASCADE, primary_key=True)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    document_label = models.ForeignKey(DocumentLabel, on_delete=models.CASCADE)
 
 
 class Category(models.Model):

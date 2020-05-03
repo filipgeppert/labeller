@@ -6,43 +6,18 @@
 {% block body %}
     <div class="container ml-0 pl-0">
         <div class="row">
-            {#            <nav class="col-2 bg-light d-none d-md-block pt-2">#}
-            {#                <div class="mt-2 mb-2">Document sections:</div>#}
-            {#                <div class="sidebar-sticky">#}
-            {#                    <ul class="nav flex-column">#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link active" href="#">#}
-            {#                                Name#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="#">#}
-            {#                                Address#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="#">#}
-            {#                                Products#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="#">#}
-            {#                                Customers#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="#">#}
-            {#                                Reports#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                        <li class="nav-item">#}
-            {#                            <a class="nav-link" href="#">#}
-            {#                                Integrations#}
-            {#                            </a>#}
-            {#                        </li>#}
-            {#                    </ul>#}
-            {#                </div>#}
-            {#            </nav>#}
+            {% if paragraphs %}
+                <div class="col-12 card m-1">
+                    <div class="card-body">
+                        Labelled sections:
+                        {% for paragraph in paragraphs %}
+                            <button class="btn border-info" onclick="renderParagraph({{ paragraph.pk }})">
+                                {{ paragraph.category }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
             <div class="col-12">
                 <div class="row">
                     <div class="col-6">
@@ -52,6 +27,7 @@
                             </div>
                             <div class="card-body">
                                 <p id="text">
+                                   Select labelled section to annotate text.
                                 </p>
                             </div>
                         </div>
@@ -96,9 +72,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body" id="annotations">
+                            <div class="card-body scroll-annotations" id="annotations">
                             </div>
+
                         </div>
+                        <button class="btn btn-block font-weight-bold bg-blue text-white py-2 m-1">
+                            Save labelled text
+                        </button>
                     </div>
                 </div>
             </div>
@@ -107,6 +87,10 @@
 {% endblock body %}
 
 {% block scripts %}
+    <script>
+    let paragraphs = {{ paragraphs_json | safe }};
+    console.log(paragraphs);
+    </script>
     <script src="{% static 'js/utilities.js' %}"></script>
     <script src="{% static 'js/annotation.js' %}"></script>
 {% endblock scripts %}
