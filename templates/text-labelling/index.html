@@ -6,43 +6,43 @@
 {% block body %}
     <div class="container ml-0 pl-0">
         <div class="row">
-{#            <nav class="col-2 bg-light d-none d-md-block pt-2">#}
-{#                <div class="mt-2 mb-2">Document sections:</div>#}
-{#                <div class="sidebar-sticky">#}
-{#                    <ul class="nav flex-column">#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link active" href="#">#}
-{#                                Name#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">#}
-{#                                Address#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">#}
-{#                                Products#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">#}
-{#                                Customers#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">#}
-{#                                Reports#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">#}
-{#                                Integrations#}
-{#                            </a>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </nav>#}
+            {#            <nav class="col-2 bg-light d-none d-md-block pt-2">#}
+            {#                <div class="mt-2 mb-2">Document sections:</div>#}
+            {#                <div class="sidebar-sticky">#}
+            {#                    <ul class="nav flex-column">#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link active" href="#">#}
+            {#                                Name#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link" href="#">#}
+            {#                                Address#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link" href="#">#}
+            {#                                Products#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link" href="#">#}
+            {#                                Customers#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link" href="#">#}
+            {#                                Reports#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li class="nav-item">#}
+            {#                            <a class="nav-link" href="#">#}
+            {#                                Integrations#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                    </ul>#}
+            {#                </div>#}
+            {#            </nav>#}
             <div class="col-12">
                 <div class="row">
                     <div class="col-6">
@@ -61,7 +61,7 @@
                             </button>
                         </div>
 
-                                                <div class="card m-1">
+                        <div class="card m-1">
                             <div class="card-header">
                                 Text annotated
                             </div>
@@ -70,33 +70,37 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="form-group row mt-auto">
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputCategory" placeholder="New category">
-                            </div>
-                            <div class="col-sm-4">
-                                <a type="button" class="btn border-dark shadow" onclick="addCategory()">Add category</a>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-6 d-flex flex-column">
-                                        <div class="card m-1">
-                    <div class="card-header">
-                        <div class="row justify-content-between pl-3 pr-3">
-                            Annotations
-                            <button type="button" class="btn border-dark shadow" id="saveAnnotations">Save annotations
-                            </button>
+                        <div class="card m-1">
+                            <div class="card-header">
+                                <div class="row justify-content-between p-1">
+                                    <div class="col-7">
+                                        Annotations
+                                    </div>
+                                    <div class="col-5">
+                                        <button type="button" class="btn btn-block border-dark shadow"
+                                                id="saveAnnotations">Save annotations
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row mt-auto p-1">
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputCategory"
+                                               placeholder="New category">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <a type="button" class="btn btn-block border-dark shadow"
+                                           onclick="addCategory()">Add category</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="annotations">
+                            </div>
                         </div>
-
-                    </div>
-                    <div class="card-body" id="annotations">
                     </div>
                 </div>
-                    </div>
-                </div>
-
-
             </div>
         </div>
     </div>

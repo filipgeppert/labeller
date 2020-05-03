@@ -26,17 +26,17 @@ function addCategory() {
 function displaySelections(annotations) {
     let content = "";
     for (let i=0; i < selections.length; i++) {
-        content += '<div class="alert alert-primary row" role="alert">'
-            + `<div class="col-4 text-black-50 font-weight-bold">${selections[i].text}</div>`
+        content += '<li class="list-group-item d-flex justify-content-between align-items-center m-1 row">'
+            + `<div class="col-4">${selections[i].text}</div>`
             + getCategoriesForm(selections[i].id)
-            + getDeleteButton(selections[i].id)
-            + '</div>';
+            + `<span class="badge badge-danger badge-pill">${getDeleteButton(selections[i].id)}</span>`
+            + '</li>';
     }
     annotations.innerHTML = content;
 }
 
 function getCategoriesForm (selectionId) {
-    let start = "<div class=\"form-group col-6\">" +
+    let start = "<div class=\"form-group col-6 my-auto\">" +
                 `<select class="form-control" id="selection${selectionId}" onchange="changeCategory(${selectionId})">`
     let end= "</select></div>";
     let selection = selections.filter(s => s.id === selectionId)[0];
@@ -52,12 +52,10 @@ function getCategoriesForm (selectionId) {
 }
 
 function getDeleteButton(selectionId) {
-    let html = '<div class="col-2">'
-        + `<a class="btn border-danger text-dark" id="delete${selectionId}" onclick="removeSelection(${selectionId})">`
-        + 'Delete</a>'
-        + '</div>'
-    return html;
+    return `<a id="delete${selectionId}" onclick="removeSelection(${selectionId})">`
+        + 'Delete</a>';
 }
+
 
 function changeCategory(selectionId) {
     let form = document.getElementById(`selection${selectionId}`);
