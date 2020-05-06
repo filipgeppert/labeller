@@ -3,11 +3,6 @@ mark {
   color: black;
 }
 
-.button:active {
-  box-shadow: 0 10px #bfff00;
-  transform: translateY(4px);
-}
-
 canvas {
   border:1px solid #000000;
 }
@@ -17,7 +12,7 @@ canvas {
 }
 
 .text-primary {
-  color: #d7dbf6 !important;
+  color: #d7dbf6;
 }
 
 .text-secondary {
@@ -32,19 +27,31 @@ canvas {
   background-color: #3d63d2 !important;
 }
 
-.wrapper {
-    display: flex;
-    width: 100%;
+.bg-green {
+  background-color: #1cc88a !important;
 }
 
-#sidebar {
-    width: 250px;
-    position: fixed;
+#message {
+    position: absolute;
     top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 999;
-    background: #7386D5;
-    color: #fff;
-    transition: all 0.3s;
+    right: 0;
+    display: none;
+}
+
+.scroll-annotations {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#annotations {
+    height: 300px;
+}
+
+#categories {
+    height: 130px;
+}
+
+.scroll-categories {
+    max-height: 130px;
+    overflow-y: auto;
 }
