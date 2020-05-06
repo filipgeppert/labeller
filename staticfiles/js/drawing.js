@@ -15,6 +15,22 @@ let messageBox = document.getElementById("message");
 let messageLarge = document.getElementById("messageLarge");
 let messageSmall = document.getElementById("messageSmall");
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function getDeleteButton(selectionId) {
     return `<a id="delete${selectionId}" onclick="removeSelection(${selectionId})">`
         + 'Delete</a>';
@@ -57,23 +73,28 @@ function sendImageAJAX(img) {
     let formData = new FormData();
     // let file = $('#cv')[0].files[0];
     formData.append('image', img);
-    // TODO: add csrf token
-    // https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
+
     $.ajax({
         url: 'saveImage',
         type: 'post',
         data: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
         contentType: false,
         processData: false,
         success: function (data) {
             imageId = data.imageId;
+            console.log("Image was saved.")
         },
-        error: function () {
+        error: function(xhr, status, error) {
             // TODO: add modal info that data was not saved
+            console.log(xhr.responseText);
             console.log("There was a problem with saving image.")
         }
     });
 }
+
 
 function init() {
     canvas.addEventListener('mousedown', mouseDown, false);
