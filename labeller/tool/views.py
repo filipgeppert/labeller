@@ -9,10 +9,16 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, DetailView
 from django.db.models import Q, F
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework import viewsets
 
 from labeller.ocr.ocr import process_image_part
 from labeller.ocr.utilities import resize_coordinates
 from labeller.tool.models import Document, DocumentLabel, Paragraph
+from labeller.tool.serializers import DocumentSerializer
 
 # Create your views here.
 
@@ -99,11 +105,10 @@ def save_image_labels(request):
     })
 
 
-@csrf_exempt
+# @csrf_exempt
 def save_image(request):
     # TODO: implement this:
     # https://medium.com/zeitcode/asynchronous-file-uploads-with-django-forms-b741720dc952
-
     image = request.FILES.get('image', None)
     print(image)
     i = Document(image=image)

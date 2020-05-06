@@ -9,8 +9,11 @@ urlpatterns = [
     ])),
 
     path("labelImage/", include([
-        path("", views.LabelImageView.as_view(), name='label-image'),
-        path("save", views.save_image_labels, name='save-image'),
-        path("saveImage", views.save_image, name='save-image'),
+        path("", views.LabelImageView.as_view(),
+             name='label-image'),
+        path("save", views.save_image_labels,
+             name='save-image'),
+        path("saveImage", views.save_image,
+             name='save-image'),
     ])),
 ]
