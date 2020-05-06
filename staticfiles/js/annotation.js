@@ -2,14 +2,48 @@ let text = document.getElementById("text");
 let textAnnotated = document.getElementById("text-annotated");
 let annotations = document.getElementById('annotations');
 let newCategory = document.getElementById('inputCategory');
-
-let content = "This is an example sentence.";
-text.innerText = content;
-
 let saveSelection = document.getElementById('saveSelection');
 let saveAnnotations = document.getElementById('saveAnnotations');
-let selections = [];
-let categories = ['statistics', 'programming', 'devops'];
+let paragraph_annotations = [];
+let current_paragraph_pk = null;
+
+function renderParagraph(paragraphPk) {
+    current_paragraph_pk = paragraphPk;
+    let paragraph = paragraph_annotations.filter(s => s.paragraphPk === paragraphPk)[0];
+    text.innerText = paragraph.text;
+    displaySelections(paragraph.selections)
+    // highlightSelections(textAnnotated, content, paragraph.selections);
+    console.log(paragraph);
+    console.log(paragraphPk);
+}
+
+
+// Data
+class Paragraph {
+    constructor(text, documentId, paragraphPk) {
+        this.text = text;
+        this.documentId = documentId;
+        this.paragraphPk = paragraphPk;
+        this.selections = [];
+        this.categories = ['other'];
+    }
+
+    addCategory(category) {
+        if (category.value !== "") {
+            this.categories.push(category.value);
+        }
+    }
+
+    addSelection(selection) {
+        let s = {
+            id: this.selections.length + 1,
+            text: selection.toString(),
+            from: Math.min(selection.anchorOffset, selection.focusOffset),
+            to: Math.max(selection.anchorOffset, selection.focusOffset),
+        }
+        this.selections.push(s);
+    }
+}
 
 
 function getOffset(textInnerHTML) {
@@ -23,7 +57,7 @@ function addCategory() {
     }
 }
 
-function displaySelections(annotations) {
+function displaySelections(selections) {
     let content = "";
     for (let i=0; i < selections.length; i++) {
         content += '<li class="list-group-item d-flex justify-content-between align-items-center m-1 row">'
@@ -84,20 +118,6 @@ function highlightSelections(element, textContent, selections) {
     element.innerHTML = contentHighlighted;
 }
 
-saveSelection.addEventListener("click", function ()
-    {
-        let selection = document.getSelection();
-        let s = {
-            id: selections.length + 1,
-            text: selection.toString(),
-            from: Math.min(selection.anchorOffset, selection.focusOffset),
-            to: Math.max(selection.anchorOffset, selection.focusOffset),
-        }
-        selections.push(s);
-        displaySelections(annotations);
-        highlightSelections(textAnnotated, content, selections);
-    }
-);
 
 function readTextFile(file, callback) {
     let rawFile = new XMLHttpRequest();
@@ -118,6 +138,7 @@ readTextFile("../ocr/texts/cv_3.json", function(text_json){
     text.innerHTML = content;
 });
 
+
 function sendDataAJAX (url, data) {
       $.ajax({
         url: url,
@@ -130,15 +151,39 @@ function sendDataAJAX (url, data) {
 }
 
 
-saveAnnotations.addEventListener('click', function () {
-    // Construct annotation object
-    let data = {
-        "documentId": JSON.stringify(1),
-        "paragraphId": JSON.stringify(1),
-        "labelledText": JSON.stringify({
-            "text": text.innerText,
-            "selections": selections,
-        })
-    };
-   sendDataAJAX('save', data);
-});
+function init() {
+    // Init paragraph objects
+    for (let paragraph of paragraphs) {
+        paragraph_annotations.push(
+            new Paragraph(
+                paragraph.fields.text,
+                paragraph.fields.document,
+                paragraph.pk,
+            )
+        )
+    }
+
+    saveSelection.addEventListener("click", function () {
+            let selection = document.getSelection();
+            let current_paragraph = paragraph_annotations.filter((s) => s.paragraphPk === current_paragraph_pk)[0];
+            console.log(current_paragraph);
+            current_paragraph.addSelection(selection);
+            renderParagraph(current_paragraph_pk);
+        }
+    );
+
+    saveAnnotations.addEventListener('click', function () {
+        // Construct annotation object
+        let data = {
+            "documentId": JSON.stringify(1),
+            "paragraphId": JSON.stringify(1),
+            "labelledText": JSON.stringify({
+                "text": text.innerText,
+                "selections": selections,
+            })
+        };
+        sendDataAJAX('save', data);
+    });
+}
+
+init();
