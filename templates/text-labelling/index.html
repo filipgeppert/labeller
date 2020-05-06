@@ -11,44 +11,56 @@
                     <div class="card-body">
                         Labelled sections:
                         {% for paragraph in paragraphs %}
-                            <button class="btn border-info" onclick="renderParagraph({{ paragraph.pk }})">
-                                {{ paragraph.category }}
-                            </button>
+                            {% if forloop.first %}
+                                <button id="firstParagraphButton" class="btn border-info" onclick="renderParagraph({{ paragraph.pk }})">
+                                    {{ paragraph.category }}
+                                </button>
+
+                            {% else %}
+                                <button class="btn border-info" onclick="renderParagraph({{ paragraph.pk }})">
+                                    {{ paragraph.category }}
+                                </button>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
             {% endif %}
-            <div class="col-12">
+            <div class="col-12 my-1">
                 <div class="row">
                     <div class="col-6">
-                        <div class="card m-1">
+                        <div class="card">
                             <div class="card-header">
-                                Text
+                                <div class="row justify-content-between p-1">
+                                    <div class="col-8">
+                                        Text
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block border-dark shadow"
+                                                id="saveAnnotation">Add annotation
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <p id="text">
-                                   Select labelled section to annotate text.
+                                    Select labelled section to annotate text.
                                 </p>
                             </div>
                         </div>
 
-                        <div class="container mt-2 mb-2">
-                            <button type="button" class="btn border-dark shadow" id="saveSelection">Add selection
-                            </button>
-                        </div>
+{#                        <div class="card m-1">#}
+{#                            <div class="card-header">#}
+{#                                Text annotated#}
+{#                            </div>#}
+{#                            <div class="card-body">#}
+{#                                <p id="text-annotated">#}
+{#                                </p>#}
+{#                            </div>#}
+{#                        </div>#}
 
-                        <div class="card m-1">
-                            <div class="card-header">
-                                Text annotated
-                            </div>
-                            <div class="card-body">
-                                <p id="text-annotated">
-                                </p>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-6 d-flex flex-column">
-                        <div class="card m-1">
+                        <div class="card">
                             <div class="card-header">
                                 <div class="row justify-content-between p-1">
                                     <div class="col-7">
@@ -67,8 +79,8 @@
                                                placeholder="New category">
                                     </div>
                                     <div class="col-sm-5">
-                                        <a type="button" class="btn btn-block border-dark shadow"
-                                           onclick="addCategory()">Add category</a>
+                                        <button type="button" class="btn btn-block border-dark shadow"
+                                           id="addCategory">Add category</button>
                                     </div>
                                 </div>
                             </div>
@@ -84,13 +96,15 @@
             </div>
         </div>
     </div>
+
+    {% include '_message.html' %}
+
 {% endblock body %}
 
 {% block scripts %}
     <script>
     let paragraphs = {{ paragraphs_json | safe }};
-    console.log(paragraphs);
     </script>
     <script src="{% static 'js/utilities.js' %}"></script>
-    <script src="{% static 'js/annotation.js' %}"></script>
+    <script src="{% static 'js/annotation_2.js' %}"></script>
 {% endblock scripts %}
