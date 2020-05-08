@@ -3,6 +3,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    path("", views.ListDocuments.as_view(), name='list-documents'),
     path("labelText/", include([
         path("<int:pk>", views.LabelTextView.as_view(), name='label-text'),
         path("save", views.save_labelled_text, name='save-text'),

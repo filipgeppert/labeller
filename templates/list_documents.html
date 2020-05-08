@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}List documents {% endblock title %}
+
+{% block body %}
+    <div class="container m-0 p-0">
+        {% for document in documents %}
+            <div class="row m-2">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <h5 class="card-title">{{ document.image }}</h5>
+                            </div>
+                            <div class="col-3">
+                                Labelled paragraphs: {{ document.labelled_paragraphs_count }}
+                            </div>
+                            <div class="col-3">
+                                Annotated fields: {{ document.text_labels_count }}
+                            </div>
+                            <div class="col-3">
+                                <a href="{% url 'label-text' document.pk %}" class="btn btn-block bg-blue btn-primary">Label text</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include '_message.html' %}
+
+{% endblock body %}
+

@@ -1,24 +1,18 @@
-from django.http import JsonResponse
+import json
 import json
 import os
 
 import cv2
-from django.core import serializers
 from django.conf import settings
+from django.core import serializers
+from django.db.models import F, Count, Subquery, IntegerField, OuterRef
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, DetailView
-from django.db.models import Q, F
-from rest_framework.parsers import FileUploadParser
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework import viewsets
+from django.views.generic import TemplateView, DetailView, ListView
 
 from labeller.ocr.ocr import process_image_part
 from labeller.ocr.utilities import resize_coordinates
-from labeller.tool.models import Document, DocumentLabel, Paragraph
-from labeller.tool.serializers import DocumentSerializer
+from labeller.tool.models import Document, DocumentLabel, Paragraph, TextLabel
+
 
 # Create your views here.
 
@@ -43,13 +37,44 @@ class LabelTextView(DetailView):
         return ctx
 
 
+class ListDocuments(ListView):
+    template_name = 'list_documents.html'
+    model = Document
+
+    context_object_name = 'documents'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ListDocuments, self).get_context_data(**kwargs)
+        return ctx
+
+    def get_queryset(self):
+        text_labels_count = Document.objects.annotate(text_labels_count=Count('paragraphs__textlabels')).filter(pk=OuterRef('pk'))
+        labelled_paragraphs_count = Document.objects.annotate(labelled_paragraphs_count=Count('paragraphs')).filter(pk=OuterRef('pk'))
+
+        queryset = Document.objects.annotate(
+            text_labels_count=Subquery(text_labels_count.values('text_labels_count'), output_field=IntegerField()),
+            labelled_paragraphs_count=Subquery(labelled_paragraphs_count.values('labelled_paragraphs_count'), output_field=IntegerField())
+        )
+        return queryset
+
+
 def save_labelled_text(request):
     labelled_text = request.GET.get('labelledText', None)
     document_id = request.GET.get('documentId', None)
     paragraph_id = request.GET.get('paragraphId', None)
+    paragraph = Paragraph.objects.filter(id=paragraph_id).get()
 
     if labelled_text is not None:
         labelled_text = json.loads(labelled_text)
+        for selection in labelled_text['selections']:
+            dl = TextLabel(
+                start_index=selection['from'],
+                end_index=selection['to'],
+                text=selection['text'],
+                category=selection['category'],
+                paragraph=paragraph
+            )
+            dl.save()
 
     return JsonResponse({
         "message": "Data was saved."
